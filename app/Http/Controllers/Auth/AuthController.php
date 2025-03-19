@@ -87,4 +87,21 @@ class AuthController extends Controller
             return response()->json(['message' => 'Could not refresh token'], 500);
         }
     }
+
+    /**
+     * Validate user token
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function validateToken()
+    {
+        if (!request()->hasCookie('sessionID')) {
+            return response()->json(['message' => 'Unauthorized, no cookie present'], 401);
+        }
+        $token = request()->cookie('sessionID');
+        $user = $this->userService->validateToken($token);
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized, invalid token'], 401);
+        }
+        return response()->json(['user' => $user], 200);
+    }
 }

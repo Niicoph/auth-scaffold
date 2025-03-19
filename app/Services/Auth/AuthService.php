@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException as ExceptionsJWTException;
 use Illuminate\Support\Str;
 use App\Models\User;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthService
 {
@@ -72,6 +73,23 @@ class AuthService
             $newToken = Auth::login($user);
             return ['token' => $newToken];
         } catch (ExceptionsJWTException $e) {
+            return false;
+        }
+    }
+    /**
+     * validate a token
+     * @param $token
+     * @return bool
+     */
+    public function validateToken($token)
+    {
+        try {
+            $user = JWTAuth::setToken($token)->authenticate();
+            if (!$user) {
+                return false;
+            }
+            return $user;
+        } catch (\Exception $e) {
             return false;
         }
     }
