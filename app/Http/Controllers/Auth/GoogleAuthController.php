@@ -30,8 +30,10 @@ class GoogleAuthController extends Controller
             }
             $token = $response['token'];
             // $user = $response['user'];
-            return Redirect::to('https://www.example.com/dashboard')
-                ->withCookie(cookie('sessionID', $token, 60, '/', null, true, 'Lax'));
+            return redirect('https://valentinomenu.com/dashboard')
+                ->withCookie(cookie('sessionID', $token, 60, '/', '.valentinomenu.com', true, true, false, 'Lax'));
+            // return Redirect::to('https://www.example.com/dashboard')
+            //     ->withCookie(cookie('sessionID', $token, 60, '/', null, true, 'Lax'));
         } catch (\Exception $e) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }

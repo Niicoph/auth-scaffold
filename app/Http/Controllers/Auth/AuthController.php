@@ -92,12 +92,12 @@ class AuthController extends Controller
      * Validate user token
      * @return \Illuminate\Http\JsonResponse
      */
-    public function validateToken()
+    public function validateToken(Request $request)
     {
-        if (!request()->hasCookie('sessionID')) {
+        if (!$request->hasCookie('sessionID')) {
             return response()->json(['message' => 'Unauthorized, no cookie present'], 401);
         }
-        $token = request()->cookie('sessionID');
+        $token = $request->cookie('sessionID');
         $user = $this->userService->validateToken($token);
         if (!$user) {
             return response()->json(['message' => 'Unauthorized, invalid token'], 401);
